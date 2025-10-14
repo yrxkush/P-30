@@ -29,6 +29,7 @@ body {
     display: flex;
     height: 100vh;
     overflow: hidden;
+    padding: 20px 20px 20px 0;
 }
 
 /* Gradient animation */
@@ -38,45 +39,46 @@ body {
     100% { background-position: 0% 50%; }
 }
 
-/* FLOATING SIDEBAR ONLY */
+/* FIXED SIDEBAR - PROPER CENTERING */
 .sidebar {
-    width: 80px;
+    width: 70px;
     height: calc(100vh - 40px);
     background: var(--sidebar-bg);
     backdrop-filter: blur(25px);
     -webkit-backdrop-filter: blur(25px);
     border: 1px solid var(--border-color);
-    border-radius: 24px;
+    border-radius: 0 24px 24px 0;
     display: flex;
     flex-direction: column;
-    padding: 20px 0;
+    padding: 15px 0;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
+    position: fixed;
+    left: 0;
+    top: 20px;
     z-index: 100;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), 
                 0 10px 20px rgba(0, 0, 0, 0.05),
                 inset 0 1px 1px rgba(255, 255, 255, 0.6);
     overflow: hidden;
-    margin: 20px 0 20px 20px;
 }
 
 .sidebar.active {
     width: 280px;
+    padding: 15px;
 }
 
-/* Profile Section */
+/* Profile Section - COMPLETELY FIXED CENTERING */
 .profile-section {
     display: flex;
     align-items: center;
-    gap: 15px;
-    margin: 0 20px 25px 20px;
-    padding: 12px;
-    border-radius: 16px;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding: 10px;
     cursor: pointer;
     transition: all 0.3s ease;
-    min-height: 64px;
+    min-height: 60px;
     justify-content: center;
-    position: relative;
+    width: 100%;
 }
 
 .sidebar.active .profile-section {
@@ -85,11 +87,12 @@ body {
 
 .profile-section:hover {
     background: var(--hover-bg);
+    border-radius: 12px;
 }
 
 .profile-avatar {
-    width: 48px;
-    height: 48px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     overflow: hidden;
     flex-shrink: 0;
@@ -97,8 +100,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 3px solid rgba(255, 255, 255, 0.8);
-    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
 .profile-avatar img {
@@ -108,154 +111,154 @@ body {
 }
 
 .profile-name {
-    font-weight: 700;
-    font-size: 16px;
+    font-weight: 600;
+    font-size: 14px;
     white-space: nowrap;
     color: var(--text-primary);
     opacity: 0;
-    transform: translateX(-20px);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    visibility: hidden;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
 }
 
 .sidebar.active .profile-name {
     opacity: 1;
+    visibility: visible;
     transform: translateX(0);
 }
 
-/* Elegant Dividers */
+/* Dividers - FIXED */
 .divider {
     border: none;
     height: 1px;
     background: linear-gradient(90deg, 
         transparent, 
-        var(--border-color) 20%, 
-        var(--border-color) 80%, 
+        var(--border-color) 30%, 
+        var(--border-color) 70%, 
         transparent
     );
-    margin: 0 20px 20px 20px;
+    margin: 0 15px 15px 15px;
     opacity: 0;
+    visibility: hidden;
     transform: scaleX(0);
-    transition: all 0.4s ease;
+    transition: all 0.3s ease;
 }
 
 .sidebar.active .divider {
     opacity: 1;
+    visibility: visible;
     transform: scaleX(1);
 }
 
-/* Redesigned Sidebar Buttons */
+/* Sidebar Buttons - FIXED CENTERING */
 .sidebar-btn {
     display: flex;
     align-items: center;
-    gap: 15px;
-    padding: 14px 20px;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
     background: transparent;
     border: none;
     color: var(--text-primary);
-    border-radius: 16px;
+    border-radius: 10px;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    margin: 0 20px 8px 20px;
+    transition: all 0.3s ease;
+    margin: 0 10px 6px 10px;
     white-space: nowrap;
-    min-height: 52px;
+    min-height: 44px;
     position: relative;
-    overflow: hidden;
-    justify-content: center;
+    width: calc(100% - 20px);
 }
 
 .sidebar.active .sidebar-btn {
     justify-content: flex-start;
-}
-
-.sidebar-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: var(--hover-bg);
-    border-radius: 16px;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: -1;
-}
-
-.sidebar-btn:hover::before {
-    opacity: 1;
+    padding: 10px 15px;
 }
 
 .sidebar-btn:hover {
+    background: var(--hover-bg);
     color: var(--blue-accent);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
 }
 
 .sidebar-btn svg {
     flex-shrink: 0;
-    width: 24px;
-    height: 24px;
+    width: 18px;
+    height: 18px;
     transition: all 0.3s ease;
 }
 
 .sidebar-btn:hover svg {
-    transform: scale(1.1);
+    transform: scale(1.05);
 }
 
+/* Button Text - FIXED */
 .btn-text {
-    font-weight: 600;
-    font-size: 15px;
+    font-weight: 500;
+    font-size: 13px;
     white-space: nowrap;
     opacity: 0;
-    transform: translateX(-15px);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    visibility: hidden;
+    transform: translateX(-8px);
+    transition: all 0.3s ease;
 }
 
 .sidebar.active .btn-text {
     opacity: 1;
+    visibility: visible;
     transform: translateX(0);
 }
 
-/* Special New Chat Button */
+/* Special New Chat Button - FIXED */
 .new-chat {
     background: linear-gradient(135deg, var(--blue-accent), var(--blue-light));
     color: white;
-    font-weight: 700;
-    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
 }
 
-.new-chat::before {
-    background: rgba(255, 255, 255, 0.2);
+.new-chat .btn-text {
+    color: white;
 }
 
 .new-chat:hover {
     color: white;
-    transform: translateY(-3px);
-    box-shadow: 0 15px 35px rgba(59, 130, 246, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
 }
 
-/* Chat History Area */
+.new-chat:hover .btn-text {
+    color: white;
+}
+
+.new-chat svg {
+    color: white;
+}
+
+.new-chat:hover svg {
+    color: white;
+}
+
+/* Chat History - FIXED */
 .chat-history {
     flex: 1;
     overflow-y: auto;
-    margin: 15px 20px;
+    margin: 10px 15px;
     opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
     transition-delay: 0.1s;
 }
 
 .sidebar.active .chat-history {
     opacity: 1;
+    visibility: visible;
     transform: translateY(0);
 }
 
-.sidebar:not(.active) .chat-history {
-    display: none;
-}
-
 .chat-history::-webkit-scrollbar {
-    width: 6px;
+    width: 3px;
 }
 
 .chat-history::-webkit-scrollbar-track {
@@ -264,53 +267,35 @@ body {
 
 .chat-history::-webkit-scrollbar-thumb {
     background: var(--border-color);
-    border-radius: 3px;
+    border-radius: 2px;
 }
 
 .chat-item {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 12px 15px;
-    border-radius: 12px;
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: 6px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    margin-bottom: 6px;
-    position: relative;
-    overflow: hidden;
-}
-
-.chat-item::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: var(--hover-bg);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: -1;
-}
-
-.chat-item:hover::before {
-    opacity: 1;
+    transition: all 0.2s ease;
+    margin-bottom: 3px;
 }
 
 .chat-item:hover {
-    transform: translateX(5px);
+    background: var(--hover-bg);
+    transform: translateX(2px);
 }
 
 .chat-item svg {
     flex-shrink: 0;
     color: var(--text-secondary);
-    width: 18px;
-    height: 18px;
+    width: 14px;
+    height: 14px;
 }
 
 .chat-title {
-    font-size: 14px;
-    font-weight: 500;
+    font-size: 12px;
+    font-weight: 400;
     color: var(--text-secondary);
     white-space: nowrap;
     overflow: hidden;
@@ -320,35 +305,22 @@ body {
 /* Bottom Section */
 .bottom-divider {
     margin-top: auto;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .settings-btn {
-    margin-top: 10px;
+    margin-top: 5px;
 }
 
-/* Menu Toggle Button Highlight */
-#sidebarToggle {
-    position: relative;
+/* Chat Main Container - ADJUSTED FOR FIXED SIDEBAR */
+.chat-main-container {
+    flex: 1;
+    margin-left: 90px;
+    transition: margin-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-#sidebarToggle::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 40px;
-    height: 40px;
-    background: radial-gradient(circle, var(--blue-light) 0%, transparent 70%);
-    opacity: 0;
-    border-radius: 50%;
-    transition: opacity 0.3s ease;
-    z-index: -1;
-}
-
-.sidebar.active #sidebarToggle::after {
-    opacity: 0.2;
+.sidebar.active ~ .chat-main-container {
+    margin-left: 300px;
 }
 
 /* Animations */
@@ -383,21 +355,78 @@ body {
 }
 
 .btn-press:active {
-    transform: scale(0.92);
+    transform: scale(0.95);
 }
 
-/* Responsive */
+/* Responsive Design */
 @media (max-width: 768px) {
-    .welcome-title {
-        font-size: 32px;
+    body {
+        padding: 10px 10px 10px 0;
     }
     
     .sidebar {
-        width: 70px;
+        width: 60px;
+        height: calc(100vh - 20px);
+        top: 10px;
     }
     
-    .sidebar:hover,
     .sidebar.active {
         width: 240px;
+    }
+    
+    .chat-main-container {
+        margin-left: 80px;
+    }
+    
+    .sidebar.active ~ .chat-main-container {
+        margin-left: 260px;
+    }
+    
+    .sidebar-btn {
+        margin: 0 8px 5px 8px;
+        min-height: 40px;
+    }
+    
+    .profile-avatar {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .sidebar-btn svg {
+        width: 16px;
+        height: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar {
+        width: 55px;
+    }
+    
+    .sidebar.active {
+        width: 220px;
+    }
+    
+    .chat-main-container {
+        margin-left: 75px;
+    }
+    
+    .sidebar.active ~ .chat-main-container {
+        margin-left: 240px;
+    }
+    
+    .sidebar-btn {
+        margin: 0 6px 4px 6px;
+        min-height: 38px;
+    }
+    
+    .profile-avatar {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .sidebar-btn svg {
+        width: 15px;
+        height: 15px;
     }
 }

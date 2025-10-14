@@ -15,15 +15,29 @@ let conversationStarted = false;
 let toastTimeout;
 let shortMode = false;
 
-// Sidebar functionality - only toggle on button click
+// Sidebar functionality
 sidebarToggle.addEventListener('click', (e) => {
     e.stopPropagation();
     sidebar.classList.toggle('active');
 });
 
+// Profile section functionality
+document.querySelector('.profile-section')?.addEventListener('click', () => {
+    showToast('Profile: Feature coming soon!');
+});
+
+// Settings button functionality
+document.querySelector('.settings-btn')?.addEventListener('click', () => {
+    showSettings();
+});
+
+// Search chat functionality
+document.querySelector('.search-chat')?.addEventListener('click', () => {
+    showToast('Search: Feature coming soon!');
+});
+
 // Chat input functionality
-userInput.addEventListener('input', function() {
-    // Enable/disable send button based on input
+userInput?.addEventListener('input', function() {
     sendBtn.disabled = !this.value.trim();
 });
 
@@ -36,7 +50,7 @@ function typewriterEffect(element, text, callback) {
         if (i < text.length) {
             element.innerHTML += text.charAt(i);
             i++;
-            chatMessages.scrollTop = chatMessages.scrollHeight;
+            if (chatMessages) chatMessages.scrollTop = chatMessages.scrollHeight;
             setTimeout(type, speed);
         } else {
             element.classList.remove('typing-cursor');
@@ -48,7 +62,7 @@ function typewriterEffect(element, text, callback) {
 
 // Add message to chat
 function addMessage(message, sender) {
-    if (!conversationStarted) {
+    if (!conversationStarted && aiIdentity) {
         aiIdentity.style.display = 'none';
         conversationStarted = true;
     }
@@ -71,37 +85,230 @@ function addMessage(message, sender) {
         contentDiv.appendChild(p);
         messageContainer.appendChild(contentDiv);
         
-        chatMessages.appendChild(messageContainer);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+        if (chatMessages) {
+            chatMessages.appendChild(messageContainer);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
         
         typewriterEffect(p, message);
         return;
     }
     
-    chatMessages.appendChild(messageContainer);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
+    if (chatMessages) {
+        chatMessages.appendChild(messageContainer);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
 }
 
 // Handle user input
 function handleUserInput() {
+    if (!userInput) return;
+    
     const question = userInput.value.trim();
     if (question === '') return;
 
     addMessage(question, 'user');
     
     userInput.value = '';
-    sendBtn.disabled = true;
+    if (sendBtn) sendBtn.disabled = true;
 
     // Simulate AI thinking time
     setTimeout(() => {
-        const answer = findAnswer(question);
+        const answer = findAnswer ? findAnswer(question) : "I'm here to help! This is a demo response.";
         addMessage(answer, 'ai');
-        sendBtn.disabled = false;
+        if (sendBtn) sendBtn.disabled = false;
     }, 1000);
+}
+
+// Show settings modal
+function showSettings() {
+    const settingsModal = document.createElement('div');
+    settingsModal.className = 'settings-modal';
+    settingsModal.innerHTML = `
+        <div class="settings-content">
+            <div class="settings-header">
+                <h3>Settings</h3>
+                <button class="close-settings" onclick="closeSettings()">&times;</button>
+            </div>
+            <div class="settings-body">
+                <div class="setting-item">
+                    <label>Theme</label>
+                    <select id="theme-select">
+                        <option value="light">Light Mode</option>
+                        <option value="dark">Dark Mode</option>
+                        <option value="auto">Auto</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <label>Language</label>
+                    <select id="language-select">
+                        <option value="en">English</option>
+                        <option value="es">Spanish</option>
+                        <option value="fr">French</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <label>
+                        <input type="checkbox" id="notifications-toggle" checked>
+                        Enable Notifications
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <label>
+                        <input type="checkbox" id="sound-toggle" checked>
+                        Sound Effects
+                    </label>
+                </div>
+            </div>
+            <div class="settings-footer">
+                <button class="save-settings" onclick="saveSettings()">Save Changes</button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(settingsModal);
+    
+    // Add styles for settings modal
+    const style = document.createElement('style');
+    style.textContent = `
+        .settings-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .settings-content {
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 0;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            animation: liquid-pop-in 0.4s ease;
+        }
+        
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 25px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .settings-header h3 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .close-settings {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+        
+        .close-settings:hover {
+            background: var(--hover-bg);
+            color: var(--text-primary);
+        }
+        
+        .settings-body {
+            padding: 25px;
+        }
+        
+        .setting-item {
+            margin-bottom: 20px;
+        }
+        
+        .setting-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .setting-item label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        .setting-item select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.5);
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+        
+        .setting-item input[type="checkbox"] {
+            margin-right: 8px;
+        }
+        
+        .settings-footer {
+            padding: 20px 25px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .save-settings {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--blue-accent), var(--blue-light));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .save-settings:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+// Close settings modal
+function closeSettings() {
+    const modal = document.querySelector('.settings-modal');
+    if (modal) {
+        modal.remove();
+    }
+}
+
+// Save settings
+function saveSettings() {
+    showToast('Settings saved successfully!');
+    closeSettings();
 }
 
 // Show toast notification
 function showToast(message) {
+    if (!toast || !toastMessage) return;
+    
     clearTimeout(toastTimeout);
     toastMessage.textContent = message;
     toast.style.animation = 'toast-in 0.5s ease forwards';
@@ -112,21 +319,21 @@ function showToast(message) {
 }
 
 // Event listeners
-sendBtn.addEventListener('click', handleUserInput);
+sendBtn?.addEventListener('click', handleUserInput);
 
-userInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter' && !sendBtn.disabled) {
+userInput?.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter' && sendBtn && !sendBtn.disabled) {
         handleUserInput();
     }
 });
 
 // Attach file functionality
-attachBtn.addEventListener('click', () => {
+attachBtn?.addEventListener('click', () => {
     showToast('Attach File: This feature is coming soon!');
 });
 
 // Short mode functionality
-shortModeBtn.addEventListener('click', () => {
+shortModeBtn?.addEventListener('click', () => {
     shortMode = !shortMode;
     shortModeBtn.style.background = shortMode ? 'rgba(59, 130, 246, 0.3)' : 'transparent';
     showToast(`Short Answers: ${shortMode ? 'Enabled' : 'Disabled'}`);
@@ -134,29 +341,22 @@ shortModeBtn.addEventListener('click', () => {
 
 // New chat functionality
 document.querySelector('.new-chat')?.addEventListener('click', () => {
-    chatMessages.innerHTML = `
-        <div id="ai-identity" class="ai-welcome-section">
-            <div class="ai-avatar-container">
-                <svg viewBox="0 0 100 100" class="ai-avatar-icon">
-                    <path d="M50,10 A40,40 0 1 1 50,90 A40,40 0 1 1 50,10 Z M50,20 A30,30 0 1 0 50,80 A30,30 0 1 0 50,20 Z" fill="none" stroke="currentColor" stroke-width="4"></path>
-                    <circle cx="50" cy="50" r="10" fill="currentColor"></circle>
-                    <path d="M30 50 L 70 50 M50 30 L 50 70" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="4 4" opacity="0.5"></path>
-                </svg>
-            </div>
-            <h1 class="ai-welcome-title">Hi, I'm YRX3246</h1>
-            <p class="ai-welcome-subtitle">Your personal portfolio guide.</p>
-        </div>
-    `;
-    
-    conversationStarted = false;
-    userInput.value = '';
-    sendBtn.disabled = true;
-    shortMode = false;
-    shortModeBtn.style.background = 'transparent';
+    if (chatMessages && aiIdentity) {
+        chatMessages.innerHTML = aiIdentity.outerHTML;
+        conversationStarted = false;
+        if (userInput) userInput.value = '';
+        if (sendBtn) sendBtn.disabled = true;
+        shortMode = false;
+        if (shortModeBtn) shortModeBtn.style.background = 'transparent';
+    }
 });
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
-    sendBtn.disabled = true;
-    userInput.focus();
+    if (sendBtn) sendBtn.disabled = true;
+    if (userInput) userInput.focus();
 });
+
+// Make functions global for onclick handlers
+window.closeSettings = closeSettings;
+window.saveSettings = saveSettings;
