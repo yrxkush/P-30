@@ -14,6 +14,36 @@ const sidebarToggle = document.getElementById('sidebarToggle');
 let conversationStarted = false;
 let toastTimeout;
 let shortMode = false;
+let isDarkMode = localStorage.getItem('darkMode') === 'true';
+
+// Initialize theme on page load
+document.addEventListener('DOMContentLoaded', () => {
+    initializeTheme();
+    if (sendBtn) sendBtn.disabled = true;
+    if (userInput) userInput.focus();
+});
+
+// Initialize theme
+function initializeTheme() {
+    if (isDarkMode) {
+        document.body.classList.add('dark-mode');
+    }
+}
+
+// Toggle dark mode
+function toggleDarkMode() {
+    isDarkMode = !isDarkMode;
+    document.body.classList.toggle('dark-mode', isDarkMode);
+    localStorage.setItem('darkMode', isDarkMode);
+    
+    // Update theme toggle in settings if it exists
+    const themeToggle = document.getElementById('theme-toggle');
+    if (themeToggle) {
+        themeToggle.checked = isDarkMode;
+    }
+    
+    showToast(`${isDarkMode ? 'Dark' : 'Light'} mode enabled`);
+}
 
 // Sidebar functionality
 sidebarToggle.addEventListener('click', (e) => {
@@ -120,7 +150,7 @@ function handleUserInput() {
     }, 1000);
 }
 
-// Show settings modal
+// Enhanced settings modal with dark mode toggle
 function showSettings() {
     const settingsModal = document.createElement('div');
     settingsModal.className = 'settings-modal';
@@ -133,11 +163,13 @@ function showSettings() {
             <div class="settings-body">
                 <div class="setting-item">
                     <label>Theme</label>
-                    <select id="theme-select">
-                        <option value="light">Light Mode</option>
-                        <option value="dark">Dark Mode</option>
-                        <option value="auto">Auto</option>
-                    </select>
+                    <div class="theme-option">
+                        <span>Dark Mode</span>
+                        <label class="theme-switch">
+                            <input type="checkbox" id="theme-toggle" ${isDarkMode ? 'checked' : ''}>
+                            <span class="theme-slider"></span>
+                        </label>
+                    </div>
                 </div>
                 <div class="setting-item">
                     <label>Language</label>
@@ -145,6 +177,8 @@ function showSettings() {
                         <option value="en">English</option>
                         <option value="es">Spanish</option>
                         <option value="fr">French</option>
+                        <option value="de">German</option>
+                        <option value="ja">Japanese</option>
                     </select>
                 </div>
                 <div class="setting-item">
@@ -159,16 +193,27 @@ function showSettings() {
                         Sound Effects
                     </label>
                 </div>
+                <div class="setting-item">
+                    <label>
+                        <input type="checkbox" id="animations-toggle" checked>
+                        Animations
+                    </label>
+                </div>
             </div>
             <div class="settings-footer">
                 <button class="save-settings" onclick="saveSettings()">Save Changes</button>
+                <button class="reset-settings" onclick="resetSettings()">Reset to Default</button>
             </div>
         </div>
     `;
     
     document.body.appendChild(settingsModal);
     
-    // Add styles for settings modal
+    // Add event listener to theme toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    themeToggle.addEventListener('change', toggleDarkMode);
+    
+    // Enhanced styles for settings modal
     const style = document.createElement('style');
     style.textContent = `
         .settings-modal {
@@ -177,7 +222,8 @@ function showSettings() {
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -187,105 +233,150 @@ function showSettings() {
         
         .settings-content {
             background: var(--glass-bg);
-            backdrop-filter: blur(25px);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
+            backdrop-filter: blur(40px) saturate(200%);
+            -webkit-backdrop-filter: blur(40px) saturate(200%);
+            border: 2px solid var(--glass-border);
+            border-radius: 24px;
             padding: 0;
-            max-width: 400px;
+            max-width: 450px;
             width: 90%;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3),
+                        inset 0 2px 4px rgba(255, 255, 255, 0.1);
             animation: liquid-pop-in 0.4s ease;
+            overflow: hidden;
         }
         
         .settings-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 25px;
+            padding: 24px 28px;
             border-bottom: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.1);
         }
         
         .settings-header h3 {
             margin: 0;
-            font-size: 18px;
-            font-weight: 600;
+            font-size: 20px;
+            font-weight: 700;
             color: var(--text-primary);
         }
         
         .close-settings {
             background: none;
             border: none;
-            font-size: 24px;
+            font-size: 28px;
             cursor: pointer;
             color: var(--text-secondary);
             padding: 0;
-            width: 30px;
-            height: 30px;
+            width: 32px;
+            height: 32px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
         }
         
         .close-settings:hover {
             background: var(--hover-bg);
             color: var(--text-primary);
+            transform: scale(1.1);
         }
         
         .settings-body {
-            padding: 25px;
+            padding: 28px;
         }
         
         .setting-item {
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
         
         .setting-item:last-child {
             margin-bottom: 0;
         }
         
-        .setting-item label {
+        .setting-item > label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 15px;
+        }
+        
+        .theme-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: var(--hover-bg);
+            backdrop-filter: blur(15px);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .theme-option span {
             font-weight: 500;
             color: var(--text-primary);
         }
         
         .setting-item select {
             width: 100%;
-            padding: 10px 12px;
+            padding: 12px 16px;
             border: 1px solid var(--border-color);
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.5);
+            border-radius: 12px;
+            background: var(--hover-bg);
+            backdrop-filter: blur(15px);
             color: var(--text-primary);
             font-size: 14px;
+            font-weight: 500;
         }
         
         .setting-item input[type="checkbox"] {
-            margin-right: 8px;
+            margin-right: 10px;
+            transform: scale(1.2);
         }
         
         .settings-footer {
-            padding: 20px 25px;
+            padding: 24px 28px;
             border-top: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            gap: 12px;
         }
         
-        .save-settings {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(135deg, var(--blue-accent), var(--blue-light));
-            color: white;
+        .save-settings, .reset-settings {
+            flex: 1;
+            padding: 14px;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        
+        .save-settings {
+            background: linear-gradient(135deg, var(--blue-accent), var(--blue-light));
+            color: white;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
         }
         
         .save-settings:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+        }
+        
+        .reset-settings {
+            background: var(--hover-bg);
+            backdrop-filter: blur(15px);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+        
+        .reset-settings:hover {
+            transform: translateY(-2px);
+            background: var(--glass-bg);
         }
     `;
     document.head.appendChild(style);
@@ -302,6 +393,17 @@ function closeSettings() {
 // Save settings
 function saveSettings() {
     showToast('Settings saved successfully!');
+    closeSettings();
+}
+
+// Reset settings
+function resetSettings() {
+    // Reset theme to light mode
+    isDarkMode = false;
+    document.body.classList.remove('dark-mode');
+    localStorage.setItem('darkMode', false);
+    
+    showToast('Settings reset to default');
     closeSettings();
 }
 
@@ -348,15 +450,12 @@ document.querySelector('.new-chat')?.addEventListener('click', () => {
         if (sendBtn) sendBtn.disabled = true;
         shortMode = false;
         if (shortModeBtn) shortModeBtn.style.background = 'transparent';
+        showToast('New chat started');
     }
-});
-
-// Initialize
-document.addEventListener('DOMContentLoaded', () => {
-    if (sendBtn) sendBtn.disabled = true;
-    if (userInput) userInput.focus();
 });
 
 // Make functions global for onclick handlers
 window.closeSettings = closeSettings;
 window.saveSettings = saveSettings;
+window.resetSettings = resetSettings;
+window.toggleDarkMode = toggleDarkMode;
