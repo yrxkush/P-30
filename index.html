@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chat Assistant</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/chatbox.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="profile-section">
+            <div class="profile-avatar">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=User" alt="Profile">
+            </div>
+            <span class="profile-name">John Doe</span>
+        </div>
+
+        <hr class="divider">
+
+        <button class="sidebar-btn" id="sidebarToggle">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+            <span class="btn-text">Menu</span>
+        </button>
+
+        <button class="sidebar-btn new-chat">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 5v14M5 12h14"></path>
+            </svg>
+            <span class="btn-text">New Chat</span>
+        </button>
+
+        <button class="sidebar-btn search-chat">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+            </svg>
+            <span class="btn-text">Search</span>
+        </button>
+
+        <div class="chat-history">
+            <div class="chat-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+                <span class="chat-title">Portfolio questions</span>
+            </div>
+            <div class="chat-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+                <span class="chat-title">Skills and technologies</span>
+            </div>
+        </div>
+
+        <hr class="divider bottom-divider">
+
+        <button class="sidebar-btn settings-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M12 1v6m0 6v6m0-13a9 9 0 1 0 0 18 9 9 0 0 0 0-18z"></path>
+            </svg>
+            <span class="btn-text">Settings</span>
+        </button>
+    </aside>
+
+    <!-- Main Chat Container -->
+    <main class="chat-main-container">
+        <!-- Chat Messages Display -->
+        <div id="chat-messages" class="chat-messages-area">
+            <div id="ai-identity" class="ai-welcome-section">
+                <div class="ai-avatar-container">
+                    <svg viewBox="0 0 100 100" class="ai-avatar-icon">
+                        <path d="M50,10 A40,40 0 1 1 50,90 A40,40 0 1 1 50,10 Z M50,20 A30,30 0 1 0 50,80 A30,30 0 1 0 50,20 Z" fill="none" stroke="currentColor" stroke-width="4"></path>
+                        <circle cx="50" cy="50" r="10" fill="currentColor"></circle>
+                        <path d="M30 50 L 70 50 M50 30 L 50 70" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="4 4" opacity="0.5"></path>
+                    </svg>
+                </div>
+                <h1 class="ai-welcome-title">Hi, I'm YRX3246</h1>
+                <p class="ai-welcome-subtitle">Your personal portfolio guide.</p>
+            </div>
+        </div>
+
+        <!-- Input Container -->
+        <div id="input-container" class="chat-input-container">
+            <div class="input-wrapper-main">
+                <input type="text" id="user-input" placeholder="Ask anything..." class="chat-main-input">
+                <div class="input-buttons-left">
+                    <button id="attach-btn" title="Attach File" class="input-action-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
+                        </svg>
+                    </button>
+                    <button id="short-mode-btn" title="Toggle Short Answers" class="input-action-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 011-1h1a2 2 0 100-4H7a1 1 0 01-1-1V7a1 1 0 011-1h3a1 1 0 001-1V4z" />
+                        </svg>
+                    </button>
+                </div>
+                <button id="send-btn" class="send-button-main">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast-notification">
+        <p id="toast-message"></p>
+    </div>
+
+    <script src="js/ui.js"></script>
+    <script src="js/dummyData.js"></script>
+</body>
+</html>
