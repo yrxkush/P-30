@@ -1,0 +1,276 @@
+/* Mobile Styles */
+@media (max-width: 768px) {
+    body {
+        padding: 10px 10px 10px 0;
+    }
+    
+    .sidebar {
+        width: 60px;
+        height: calc(100vh - 20px);
+        top: 10px;
+        padding: 12px 0;
+    }
+    
+    .sidebar.active {
+        width: 240px;
+        padding: 12px;
+    }
+    
+    .profile-section {
+        margin-bottom: 15px;
+        padding: 8px;
+        min-height: 50px;
+    }
+    
+    .profile-avatar {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .sidebar-btn {
+        margin: 0 8px 5px 8px;
+        padding: 8px;
+        min-height: 40px;
+        width: calc(100% - 16px);
+    }
+    
+    .sidebar.active .sidebar-btn {
+        padding: 8px 12px;
+        margin: 0 12px 5px 12px;
+        width: calc(100% - 24px);
+    }
+    
+    .sidebar-btn svg {
+        width: 16px;
+        height: 16px;
+    }
+    
+    .btn-text {
+        font-size: 12px;
+    }
+    
+    .chat-history {
+        margin: 8px 12px;
+    }
+    
+    .divider {
+        margin: 0 12px 12px 12px;
+    }
+    
+    .chat-main-container {
+        margin-left: 80px;
+    }
+    
+    .sidebar.active ~ .chat-main-container {
+        margin-left: 260px;
+    }
+    
+    .ai-welcome-title {
+        font-size: 24px;
+    }
+    
+    .ai-welcome-subtitle {
+        font-size: 16px;
+    }
+    
+    .ai-avatar-container {
+        width: 70px;
+        height: 70px;
+        padding: 14px;
+    }
+    
+    .chat-input-container {
+        margin: 0 15px 15px 15px;
+        width: calc(100% - 30px);
+        padding: 14px;
+    }
+    
+    .chat-main-input {
+        font-size: 15px;
+        padding-bottom: 35px;
+        padding-right: 90px;
+    }
+    
+    .send-button-main {
+        width: 38px;
+        height: 38px;
+    }
+    
+    .input-action-btn {
+        width: 34px;
+        height: 34px;
+    }
+    
+    .input-action-btn svg {
+        width: 18px;
+        height: 18px;
+    }
+    
+    .send-button-main svg {
+        width: 18px;
+        height: 18px;
+    }
+    
+    .message-content {
+        max-width: 85%;
+        font-size: 14px;
+        padding: 10px 14px;
+    }
+    
+    .toast-notification {
+        bottom: 25px;
+        left: 15px;
+        right: 15px;
+        transform: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar {
+        width: 55px;
+    }
+    
+    .sidebar.active {
+        width: 220px;
+    }
+    
+    .profile-avatar {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .sidebar-btn {
+        margin: 0 6px 4px 6px;
+        padding: 6px;
+        min-height: 36px;
+        width: calc(100% - 12px);
+    }
+    
+    .sidebar.active .sidebar-btn {
+        padding: 6px 10px;
+        margin: 0 10px 4px 10px;
+        width: calc(100% - 20px);
+    }
+    
+    .sidebar-btn svg {
+        width: 14px;
+        height: 14px;
+    }
+    
+    .btn-text {
+        font-size: 11px;
+    }
+    
+    .chat-main-container {
+        margin-left: 75px;
+    }
+    
+    .sidebar.active ~ .chat-main-container {
+        margin-left: 240px;
+    }
+    
+    .ai-welcome-title {
+        font-size: 20px;
+    }
+    
+    .ai-avatar-container {
+        width: 60px;
+        height: 60px;
+        padding: 12px;
+    }
+    
+    .chat-input-container {
+        padding: 12px;
+        margin: 0 12px 12px 12px;
+        width: calc(100% - 24px);
+    }
+    
+    .chat-main-input {
+        padding-right: 80px;
+        padding-bottom: 32px;
+    }
+    
+    .send-button-main {
+        width: 34px;
+        height: 34px;
+    }
+    
+    .input-action-btn {
+        width: 30px;
+        height: 30px;
+    }
+    
+    .input-action-btn svg {
+        width: 16px;
+        height: 16px;
+    }
+    
+    .send-button-main svg {
+        width: 16px;
+        height: 16px;
+    }
+    
+    .message-content {
+        max-width: 90%;
+        font-size: 13px;
+        padding: 8px 12px;
+    }
+}
+
+/* Large Desktop */
+@media (min-width: 1200px) {
+    body {
+        padding: 30px 30px 30px 0;
+    }
+    
+    .sidebar {
+        width: 80px;
+        top: 30px;
+        height: calc(100vh - 60px);
+    }
+    
+    .sidebar.active {
+        width: 320px;
+    }
+    
+    .chat-main-container {
+        max-width: 1100px;
+        margin-left: 100px;
+    }
+    
+    .sidebar.active ~ .chat-main-container {
+        margin-left: 340px;
+    }
+    
+    .profile-avatar {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .sidebar-btn {
+        margin: 0 12px 7px 12px;
+        padding: 12px;
+        min-height: 48px;
+    }
+    
+    .sidebar.active .sidebar-btn {
+        padding: 12px 18px;
+        margin: 0 18px 7px 18px;
+    }
+    
+    .sidebar-btn svg {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .btn-text {
+        font-size: 14px;
+    }
+}
+
+/* Ultra-wide screens */
+@media (min-width: 1600px) {
+    .chat-main-container {
+        max-width: 1200px;
+    }
+}
